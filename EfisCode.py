@@ -8,12 +8,14 @@ Created on Mon Dec 26 20:47:49 2022
 
 
 import pygame
+import sys
 import time
 #from pygame.locals import *
 #import pygame_menu
 import math
 
 '''
+sudo pip3 install adafruit-circuitpython-bno08x adafruit-circuthpython-mprls adafruit-circuitpython-ads1x15
 import board
 import busio
 import adafruit_mprls # import the pressure sensor
@@ -72,6 +74,15 @@ ALTfont = pygame.font.Font('freesansbold.ttf', 32)
 ASfont = pygame.font.Font('freesansbold.ttf', 32)
 pitchFont = pygame.font.Font('freesansbold.ttf', 12)
 
+# Button properties
+altBtn = pygame.draw.rect(surface, (200, 200, 200), pygame.Rect(874, 0, 150, 50), 0, 5)
+incBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(880, 155, 100, 50), 0, 5)
+decBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(720, 155, 100, 50), 0, 5)
+fincBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(880, 225, 100, 50), 0, 5)
+fdecBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(720, 225, 100, 50), 0, 5)
+setAltBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(825, 330, 150, 50), 0, 5)
+exitBtn = pygame.draw.rect(surface, (200, 200, 200), pygame.Rect(75, 0, 100, 50), 0, 5)
+
 def setAlt():
     global set_alt_menu
     if set_alt_menu:
@@ -79,31 +90,31 @@ def setAlt():
         
         global baro, buttonPressTime
         
-        incBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(880, 155, 100, 50), 0, 5)
+        #incBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(880, 155, 100, 50), 0, 5)
         incBaroBtnTxt = ALTfont.render('+', True, black)
         incBaroBtnRect = incBaroBtnTxt.get_rect()
         incBaroBtnRect.center = (930, 175)
         surface.blit(incBaroBtnTxt, incBaroBtnRect)
         
-        decBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(720, 155, 100, 50), 0, 5)
+        #decBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(720, 155, 100, 50), 0, 5)
         decBaroBtnTxt = ALTfont.render('-', True, black)
         decBaroBtnRect = decBaroBtnTxt.get_rect()
         decBaroBtnRect.center = (765, 175)
         surface.blit(decBaroBtnTxt, decBaroBtnRect)
         
-        fincBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(880, 225, 100, 50), 0, 5)
+        #fincBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(880, 225, 100, 50), 0, 5)
         fincBaroBtnTxt = ALTfont.render('+ +', True, black)
         fincBaroBtnRect = fincBaroBtnTxt.get_rect()
         fincBaroBtnRect.center = (930, 245)
         surface.blit(fincBaroBtnTxt, fincBaroBtnRect)
         
-        fdecBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(720, 225, 100, 50), 0, 5)
+        #fdecBaroBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(720, 225, 100, 50), 0, 5)
         fdecBaroBtnTxt = ALTfont.render('- -', True, black)
         fdecBaroBtnRect = fdecBaroBtnTxt.get_rect()
         fdecBaroBtnRect.center = (765, 245)
         surface.blit(fdecBaroBtnTxt, fdecBaroBtnRect)
         
-        setAltBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(825, 330, 150, 50), 0, 5)
+        #setAltBtn = pygame.draw.rect(surface, (135, 135, 135), pygame.Rect(825, 330, 150, 50), 0, 5)
         setAltBtnTxt = ALTfont.render('Set', True, black)
         setAltBtnRect = setAltBtnTxt.get_rect()
         setAltBtnRect.center = (900, 355)
@@ -120,7 +131,7 @@ def setAlt():
         baroRect = altTxt.get_rect()
         baroRect.center = (815, 125)
         surface.blit(baroTxt, baroRect)
-        
+'''        
         if incBaroBtn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             if((time.time() - buttonPressTime) > 0.25):
                 baro += 0.33863886666667
@@ -144,6 +155,7 @@ def setAlt():
         if setAltBtn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             set_alt_menu = False;
             
+'''
 
 def getAlt():
     h = (1 - (baroSensor/baro)**0.190284)*44307.69396 # calculate height in meters
@@ -173,17 +185,62 @@ def draw_menu():
     altBtnRect = altBtnTxt.get_rect()
     altBtnRect.center = (950, 25)
     surface.blit(altBtnTxt, altBtnRect)
+    
+    '''
     if altBtn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
         global set_alt_menu
         set_alt_menu = True;
         menu = True
     else:
-        menu = True
+        menu = True'''
+        
+    exitBtn = pygame.draw.rect(surface, (200, 200, 200), pygame.Rect(75, 0, 100, 50), 0, 5)
+    exitBtnTxt = menuFont.render('Exit', True, black)
+    exitBtnRect = exitBtnTxt.get_rect()
+    exitBtnRect.center = (125, 25)
+    surface.blit(exitBtnTxt, exitBtnRect)
+    menu = True;
     return menu
+    
 
 while True:
     if pygame.event.peek(pygame.QUIT):
         break
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if incBaroBtn.collidepoint(event.pos):
+                if((time.time() - buttonPressTime) > 0.25):
+                    baro += 0.33863886666667
+                    buttonPressTime = time.time()
+        
+            if decBaroBtn.collidepoint(event.pos):
+                if((time.time() - buttonPressTime) > 0.25):
+                    baro -= 0.33863886666667
+                    buttonPressTime = time.time()
+                
+            if fincBaroBtn.collidepoint(event.pos):
+                if((time.time() - buttonPressTime) > 0.25):
+                    baro += 03.3863886666667
+                    buttonPressTime = time.time()
+        
+            if fdecBaroBtn.collidepoint(event.pos):
+                if((time.time() - buttonPressTime) > 0.25):
+                    baro -= 03.3863886666667
+                    buttonPressTime = time.time()        
+        
+            if setAltBtn.collidepoint(event.pos):
+                set_alt_menu = False;
+                
+            if altBtn.collidepoint(event.pos):
+                #global set_alt_menu
+                set_alt_menu = True;
+            
+            if exitBtn.collidepoint(event.pos):
+                pygame.quit()
+                sys.exit()
     
     pitchCorrection = pitchDeg * pitchPPD
     surface.fill((50, 110, 170))
@@ -301,8 +358,8 @@ while True:
     pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(787, 275, 125, 50)) # altitude box  
     surface.blit(airspeed, airspeedRect)
     surface.blit(alt, altRect)
-    #if main_menu:
-    #    main_menu = draw_menu()  
+    if main_menu:
+        main_menu = draw_menu()  
     draw_menu()
     if set_alt_menu:
         setAlt()
